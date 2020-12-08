@@ -5,11 +5,10 @@ interface Position {
   column: number
 }
 
-const slope = [ 3, 1 ];
 
-function findTrees(paths: string[][], currentPosition: Position): number {
+function findTrees(slope: number[], paths: string[][], currentPosition: Position): number {
   //short circut
-  if(currentPosition.row === paths.length - 1) return 0;
+  if(currentPosition.row >= paths.length - 1) return 0;
 
   let nextPosition: Position = { row: currentPosition.row + slope[1], column: currentPosition.column + slope[0] };
 
@@ -21,9 +20,9 @@ function findTrees(paths: string[][], currentPosition: Position): number {
 
   // if we find a tree, count it
   if(paths[nextPosition.row][nextPosition.column] === '#') {
-    return findTrees(paths, nextPosition) + 1;
+    return findTrees(slope, paths, nextPosition) + 1;
   } else {
-    return findTrees(paths, nextPosition);
+    return findTrees(slope, paths, nextPosition);
   }
 }
 
@@ -31,8 +30,21 @@ function main() {
   const input = readFile(joinPath(__dirname, 'input.txt'));
   const paths = input.map(p => p.split(''));
   let startingPosition: Position = { row: 0, column: 0 };
+  // const slope = [ 3, 1 ];
+  const slopes = [
+    [1,1],
+    [3,1],
+    [5,1],
+    [7,1],
+    [1,2]
+  ]
 
-  let treesFound = findTrees(paths, startingPosition);
+  // pt.1
+  // let treesFound = findTrees(slope, paths, startingPosition);j
+
+  // pt.2
+  let trees = slopes.map(s => findTrees(s, paths, startingPosition));
+  let treesFound = trees.reduce((p, c) => p * c);
   
   console.log(treesFound);
   return treesFound;
