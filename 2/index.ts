@@ -11,12 +11,20 @@ interface Password {
   policy: PasswordPolicy
 }
 
-function validatePassword(password: Password): boolean {
+function validatePasswordPartOne(password: Password): boolean {
   const rx = new RegExp(password.policy.requiredCharacter, 'g');
 
   const result = password.value.match(rx);
 
   return result ? (result.length >= password.policy.floor) && (result.length <= password.policy.limit) : false;
+}
+
+function validatePasswordPartTwo(password: Password): boolean {
+  const valueSplit = password.value.split('');
+
+  // Toboggan Corporate Policies have no concept of "index zero"!
+  // remove one from the floor and limit to get correct indexes
+  return (valueSplit[password.policy.floor - 1] === password.policy.requiredCharacter) !== (valueSplit[password.policy.limit - 1] === password.policy.requiredCharacter)
 }
 
 function mapPolicy(policyChunk: string): PasswordPolicy {
@@ -55,7 +63,9 @@ function main() {
   const input = readFile(`${__dirname}\\input.txt`).split('\r\n');
   const passwords = mapPasswords(input);
 
-  let validPasswords = passwords.filter(p => validatePassword(p));
+  // let validPasswords = passwords.filter(p => validatePasswordPartOne(p));
+
+  let validPasswords = passwords.filter(p => validatePasswordPartTwo(p));
 
   console.log(validPasswords.length);
 
@@ -63,5 +73,3 @@ function main() {
 }
 
 main();
-// TODO:
-// https://adventofcode.com/2020/day/2#part2
