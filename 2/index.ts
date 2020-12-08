@@ -11,6 +11,14 @@ interface Password {
   policy: PasswordPolicy
 }
 
+function validatePassword(password: Password): boolean {
+  const rx = new RegExp(password.policy.requiredCharacter, 'g');
+
+  const result = password.value.match(rx);
+
+  return result ? (result.length >= password.policy.floor) && (result.length <= password.policy.limit) : false;
+}
+
 function mapPolicy(policyChunk: string): PasswordPolicy {
   let [range, characterInfo] = policyChunk.split(' ');
   const character = characterInfo.replace(':', '').trim();
@@ -44,10 +52,16 @@ function mapPasswords(passwordChunks: string[]) : Password[] {
 }
 
 function main() {
-  const input = readFile('input.txt').split('\r\n');
+  const input = readFile(`${__dirname}\\input.txt`).split('\r\n');
   const passwords = mapPasswords(input);
 
-  console.log(passwords);
+  let validPasswords = passwords.filter(p => validatePassword(p));
+
+  console.log(validPasswords.length);
+
+  return validPasswords;
 }
 
 main();
+// TODO:
+// https://adventofcode.com/2020/day/2#part2
