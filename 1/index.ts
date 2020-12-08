@@ -1,4 +1,4 @@
-import { readFile } from '../helpers/FileHelper';
+import { readFile, joinPath } from '../helpers/FileHelper';
 
 function find2020(numbers: number[]): number[] {
   let x = 0;
@@ -22,8 +22,8 @@ function find2020(numbers: number[]): number[] {
 }
 
 function main() {
-  const fileText = readFile(`${__dirname}\\input.txt`);
-  const input: number[] = fileText.split('\r\n').map(i => parseInt(i));
+  const fileText = readFile(joinPath(__dirname, 'input.txt'));
+  const input: number[] = fileText.map(i => parseInt(i));
 
   const [a, b] = find2020(input);
 

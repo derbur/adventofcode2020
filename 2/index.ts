@@ -1,4 +1,4 @@
-import { readFile } from '../helpers/FileHelper';
+import { readFile, joinPath } from '../helpers/FileHelper';
 
 interface PasswordPolicy {
   requiredCharacter: string,
@@ -60,7 +60,7 @@ function mapPasswords(passwordChunks: string[]) : Password[] {
 }
 
 function main() {
-  const input = readFile(`${__dirname}\\input.txt`).split('\r\n');
+  const input = readFile(joinPath(__dirname, 'input.txt'));
   const passwords = mapPasswords(input);
 
   // let validPasswords = passwords.filter(p => validatePasswordPartOne(p));
