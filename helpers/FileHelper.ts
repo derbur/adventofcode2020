@@ -1,13 +1,22 @@
-import { dir } from 'console';
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
 
-function readFile(fileName: string): string[] {
-  const fileBuffer = fs.readFileSync(fileName);
-  const fileString = fileBuffer.toString().split(os.EOL);
 
-  return fileString;
+function readFile(fileName: string): string[];
+function readFile(fileName: string, splitString: string): string[];
+function readFile(fileName: string, splitString?: string): string[] {
+  let fileParts: string[];
+
+  if (!splitString) {
+    const fileBuffer = fs.readFileSync(fileName);
+    fileParts = fileBuffer.toString().split(os.EOL);
+  } else {
+    const fileBuffer = fs.readFileSync(fileName);
+    fileParts = fileBuffer.toString().split(splitString);
+  }
+
+  return fileParts;
 }
 
 function joinPath(directory: string, fileName: string): string {

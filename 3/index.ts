@@ -30,7 +30,12 @@ function main() {
   const input = readFile(joinPath(__dirname, 'input.txt'));
   const paths = input.map(p => p.split(''));
   let startingPosition: Position = { row: 0, column: 0 };
+  
+  // pt.1
   // const slope = [ 3, 1 ];
+  // let treesFound = findTrees(slope, paths, startingPosition);j
+  
+  // pt.2
   const slopes = [
     [1,1],
     [3,1],
@@ -38,11 +43,6 @@ function main() {
     [7,1],
     [1,2]
   ]
-
-  // pt.1
-  // let treesFound = findTrees(slope, paths, startingPosition);j
-
-  // pt.2
   let trees = slopes.map(s => findTrees(s, paths, startingPosition));
   let treesFound = trees.reduce((p, c) => p * c);
   
