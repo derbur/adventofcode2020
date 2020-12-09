@@ -28,6 +28,7 @@ function main() {
   let passports = readFile(path.join(__dirname, 'input.txt'), os.EOL + os.EOL);
   const validPassports = passports.filter(p => validateFields(p));
   
+  //TODO: https://adventofcode.com/2020/day/4#part2
   console.log(validPassports.length);
   return validPassports;
 }
