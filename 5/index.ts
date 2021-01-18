@@ -15,7 +15,7 @@ interface SeatMap {
 function parseSeatMapConfig(stringMap: string): SeatMapConfig {
   let splitMap = stringMap.split('');
   return {
-    rowConfig: splitMap.slice(0, 6),
+    rowConfig: splitMap.slice(0, 7),
     columnConfig: splitMap.slice(7)
   }
 }
@@ -51,14 +51,30 @@ function getSeatMap(config: SeatMapConfig): SeatMap {
   }
 }
 
+function findYourSeat(seatIds: number[]): number[] {
+  let possibleIds = [];
+  for(let i = 0; i < seatIds.length - 1; i++) {
+    if(seatIds[i + 1] - seatIds[i] == 2) {
+      possibleIds.push(seatIds[i] + 1);
+    }
+  }
+  return possibleIds;
+}
+
 function main() {
+  // this could all be done via string as well
+
   let seatInput = readFile(path.join(__dirname, 'input.txt'), os.EOL);
-  let seatConfigs = seatInput.map(si => parseSeatMapConfig(si));
-  let seatMaps = seatConfigs.map(sc => getSeatMap(sc));
-  let seatIds = seatMaps.map(sm => getSeatId(sm.row, sm.column)).sort((a, b) => b -a);
+
+  let seatIds = seatInput.map(si => parseSeatMapConfig(si))
+                         .map(sc => getSeatMap(sc))
+                         .map(sm => getSeatId(sm.row, sm.column))
+                         .sort((a, b) => a - b)
 
   // Largest seat id
-  console.log(seatIds[0]);
+  console.log('Highest SeatID:', seatIds[seatIds.length - 1]);
+  // Your seat id
+  console.log('Your SeatID:', findYourSeat(seatIds));
 
   // test data
   // let seatMapString = 'FBFBBFFRLR';
