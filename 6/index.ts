@@ -24,7 +24,6 @@ function getAllAnswerSum(ans: string[]) {
         ansMap[answer.charAt(i)] = n ? ++n : 1;
       }
     });
-    // console.log(splitAns, ansMap);
     return acc + Object.values(ansMap).filter(v => v === splitAns.length).length;
   }, 0);
 }
